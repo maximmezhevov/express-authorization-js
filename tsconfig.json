@@ -3,17 +3,17 @@
 		"target": "ESNext",
 		"module": "CommonJS",
 		"moduleResolution": "node",
-
 		"outDir": "./dist",
 		"rootDir": "./src",
-
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-
+		"strict": true,
 		"types": ["@types/node", "@vercel/node"],
-
-		"strict": true
+		"baseUrl": ".",
+		"paths": {
+			"*": ["node_modules/*"]
+		}
 	},
 	"include": ["src/**/*"],
 	"exclude": ["node_modules"]

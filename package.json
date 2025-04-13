@@ -3,9 +3,9 @@
 	"version": "1.0.0",
 	"main": "app.js",
 	"scripts": {
+		"dev": "nodemon src/server.ts",
 		"build": "tsc",
-		"start": "node dist/app.js",
-		"dev": "nodemon src/app.ts"
+		"start": "node dist/server.js"
 	},
 	"engines": {
 		"node": ">=18.x"
@@ -23,7 +23,7 @@
 	"homepage": "https://github.com/maximmezhevov/express-authorization-js#readme",
 	"description": "",
 	"dependencies": {
-		"@vercel/node": "^5.1.14",
+		"@vercel/node": "^4.0.0",
 		"dotenv": "^16.5.0",
 		"express": "^5.1.0"
 	},

@@ -1,20 +1,15 @@
-import express, { Express, Request, Response } from 'express'
-import dotenv from 'dotenv'
+import express, { Express } from 'express'
+import { configureServer } from './config/server.config'
+import { apiRoutes } from './routes/api.routes'
+import { pageRoutes } from './routes/pages.routes'
 
-dotenv.config()
+export const createApp = (): Express => {
+	const app: Express = express()
 
-const app: Express = express()
+	configureServer(app)
 
-const PORT = process.env.PORT || 3001
+	app.use('/api', apiRoutes)
+	app.use('/', pageRoutes)
 
-app.use(express.json())
-
-app.get('/', (req: Request, res: Response) => {
-	res.json({ message: 'Hello, TypeScript Express!' })
-})
-
-app.listen(PORT, () => {
-	console.log(`Server is running on http://localhost:${PORT}`)
-})
-
-export default app
+	return app
+}
