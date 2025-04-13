@@ -11,4 +11,5 @@ router.get('/extra-page', (req, res) => {
 	res.sendFile(path.join(__dirname, '../../public/extra-page.html'))
 })
 
-export const pageRoutes = router
+const pagesRoutes: Router = router
+export default pagesRoutes

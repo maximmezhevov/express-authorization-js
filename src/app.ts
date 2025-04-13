@@ -1,15 +1,15 @@
-import express, { Express } from 'express'
+import express, { type Express } from 'express'
 import { configureServer } from './config/server.config'
-import { apiRoutes } from './routes/api.routes'
-import { pageRoutes } from './routes/pages.routes'
+import pageRoutes from './routes/pages.routes'
+import todosRoutes from './routes/todos.router'
 
 export const createApp = (): Express => {
 	const app: Express = express()
 
 	configureServer(app)
 
-	app.use('/api', apiRoutes)
 	app.use('/', pageRoutes)
+	app.use('/api', todosRoutes)
 
 	return app
 }
