@@ -16,7 +16,7 @@ export const configureSwagger = (app: Express) => {
 			servers: [
 				{
 					url: process.env.VERCEL_URL
-						? process.env.VERCEL_URL
+						? `https://${process.env.VERCEL_URL}`
 						: `http://localhost:${PORT}`
 				}
 			]
@@ -36,7 +36,11 @@ export const configureSwagger = (app: Express) => {
 		'/',
 		require('swagger-ui-express').serve,
 		require('swagger-ui-express').setup(specs, {
-			customSiteTitle: 'Todo API Docs'
+			customSiteTitle: 'Todo API Docs',
+			swaggerOptions: {
+				displayRequestDuration: true,
+				defaultModelsExpandDepth: -1
+			}
 		})
 	)
 }
