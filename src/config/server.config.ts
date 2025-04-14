@@ -2,7 +2,6 @@ import express, { type Express } from 'express'
 import path from 'path'
 
 export const configureServer = (app: Express) => {
-	// Enable CORS
 	app.use((req, res, next) => {
 		res.header('Access-Control-Allow-Origin', '*')
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')

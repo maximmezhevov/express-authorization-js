@@ -2,13 +2,14 @@ import { Request, Response } from 'express'
 
 interface Todo {
 	id: string
-	todo: string
+	title: string
+	completed: boolean
 }
 
 const TODOS: Todo[] = [
-	{ id: '1', todo: 'text1' },
-	{ id: '2', todo: 'text2' },
-	{ id: '3', todo: 'text3' }
+	{ id: '1', title: 'Изучить Express.js', completed: false },
+	{ id: '2', title: 'Настроить Swagger', completed: true },
+	{ id: '3', title: 'Написать тесты', completed: false }
 ]
 
 /**
@@ -17,13 +18,20 @@ const TODOS: Todo[] = [
  *   schemas:
  *     Todo:
  *       type: object
+ *       required:
+ *         - id
+ *         - title
+ *         - completed
  *       properties:
  *         id:
  *           type: string
  *           example: "1"
- *         todo:
+ *         title:
  *           type: string
- *           example: "text1"
+ *           example: "Изучить Express.js"
+ *         completed:
+ *           type: boolean
+ *           example: false
  */
 
 /**
@@ -87,7 +95,11 @@ export const getTodoById = (
 		res.status(200).json(todo)
 	} catch (error) {
 		if (error instanceof Error) {
-			res.status(400).json({ error: error.message })
+			if (error.message === 'Not found') {
+				res.status(404).json({ error: 'Todo not found' })
+			} else {
+				res.status(400).json({ error: error.message })
+			}
 		} else {
 			res.status(500).json({ error: 'Unknown error occurred' })
 		}

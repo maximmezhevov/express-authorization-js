@@ -16,19 +16,19 @@ export const configureSwagger = (app: Express) => {
 			},
 			servers: [
 				{
-					url: process.env.VERCEL_URL
-						? `https://${process.env.VERCEL_URL}`
-						: `http://localhost:${PORT}`
+					url: 'https://express-authorization-js.vercel.app',
+					description: 'Production server'
+				},
+				{
+					url: `http://localhost:${PORT}`,
+					description: 'Local server'
 				}
 			]
 		},
-		apis:
-			process.env.NODE_ENV === 'production' || !process.env.NODE_ENV
-				? ['./dist/routes/*.js', './dist/controllers/*.js']
-				: [
-						path.join(__dirname, '../routes/*.ts'),
-						path.join(__dirname, '../controllers/*.ts')
-				  ]
+		apis: [
+			path.join(process.cwd(), process.env.NODE_ENV === 'production' ? 'dist' : 'src', 'routes', '*.{ts,js}'),
+			path.join(process.cwd(), process.env.NODE_ENV === 'production' ? 'dist' : 'src', 'controllers', '*.{ts,js}')
+		]
 	}
 
 	const specs = swaggerJsdoc(options)
