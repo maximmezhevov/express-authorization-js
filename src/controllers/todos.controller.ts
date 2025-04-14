@@ -1,16 +1,6 @@
 import { Request, Response } from 'express'
-
-interface Todo {
-	id: string
-	title: string
-	completed: boolean
-}
-
-const TODOS: Todo[] = [
-	{ id: '1', title: 'Изучить Express.js', completed: false },
-	{ id: '2', title: 'Настроить Swagger', completed: true },
-	{ id: '3', title: 'Написать тесты', completed: false }
-]
+import { todoService } from '../services/todo.service'
+import { CreateTodoDto, UpdateTodoDto } from '../interfaces/todo.interface'
 
 /**
  * @swagger
@@ -22,16 +12,43 @@ const TODOS: Todo[] = [
  *         - id
  *         - title
  *         - completed
+ *         - createdAt
+ *         - updatedAt
  *       properties:
  *         id:
  *           type: string
- *           example: "1"
+ *           description: Уникальный идентификатор задачи
  *         title:
  *           type: string
- *           example: "Изучить Express.js"
+ *           description: Название задачи
  *         completed:
  *           type: boolean
- *           example: false
+ *           description: Статус выполнения
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Дата создания
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Дата последнего обновления
+ *     CreateTodoDto:
+ *       type: object
+ *       required:
+ *         - title
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: Название задачи
+ *     UpdateTodoDto:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: Название задачи
+ *         completed:
+ *           type: boolean
+ *           description: Статус выполнения
  */
 
 /**
@@ -50,8 +67,9 @@ const TODOS: Todo[] = [
  *               items:
  *                 $ref: '#/components/schemas/Todo'
  */
-export const getAllTodos = (req: Request, res: Response<Todo[]>) => {
-	res.status(200).json(TODOS)
+export const getAllTodos = async (req: Request, res: Response) => {
+	const todos = await todoService.getAllTodos()
+	res.json(todos)
 }
 
 /**
@@ -74,34 +92,109 @@ export const getAllTodos = (req: Request, res: Response<Todo[]>) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Todo'
- *       400:
- *         description: Неверный запрос (например, отсутствует ID)
  *       404:
  *         description: Задача не найдена
- *       500:
- *         description: Ошибка сервера
  */
-export const getTodoById = (
-	req: Request<{ id: string }>,
-	res: Response<Todo | { error: string }>
-) => {
-	try {
-		const { id } = req.params
-		if (!id) throw new Error('ID is required')
-
-		const todo = TODOS.find(todo => todo.id === id)
-		if (!todo) throw new Error('Not found')
-
-		res.status(200).json(todo)
-	} catch (error) {
-		if (error instanceof Error) {
-			if (error.message === 'Not found') {
-				res.status(404).json({ error: 'Todo not found' })
-			} else {
-				res.status(400).json({ error: error.message })
-			}
-		} else {
-			res.status(500).json({ error: 'Unknown error occurred' })
-		}
+export const getTodoById = async (req: Request, res: Response) => {
+	const todo = await todoService.getTodoById(req.params.id)
+	if (!todo) {
+		return res.status(404).json({ error: 'Todo not found' })
 	}
+	res.json(todo)
+}
+
+/**
+ * @swagger
+ * /api/todo:
+ *   post:
+ *     summary: Создать новую задачу
+ *     tags: [Todos]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateTodoDto'
+ *     responses:
+ *       201:
+ *         description: Задача создана
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Todo'
+ *       400:
+ *         description: Неверные данные
+ */
+export const createTodo = async (req: Request, res: Response) => {
+	const dto: CreateTodoDto = req.body
+	if (!dto.title) {
+		return res.status(400).json({ error: 'Title is required' })
+	}
+	const todo = await todoService.createTodo(dto)
+	res.status(201).json(todo)
+}
+
+/**
+ * @swagger
+ * /api/todo/{id}:
+ *   put:
+ *     summary: Обновить задачу
+ *     tags: [Todos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID задачи
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateTodoDto'
+ *     responses:
+ *       200:
+ *         description: Задача обновлена
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Todo'
+ *       404:
+ *         description: Задача не найдена
+ */
+export const updateTodo = async (req: Request, res: Response) => {
+	const dto: UpdateTodoDto = req.body
+	const todo = await todoService.updateTodo(req.params.id, dto)
+	if (!todo) {
+		return res.status(404).json({ error: 'Todo not found' })
+	}
+	res.json(todo)
+}
+
+/**
+ * @swagger
+ * /api/todo/{id}:
+ *   delete:
+ *     summary: Удалить задачу
+ *     tags: [Todos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID задачи
+ *     responses:
+ *       204:
+ *         description: Задача удалена
+ *       404:
+ *         description: Задача не найдена
+ */
+export const deleteTodo = async (req: Request, res: Response) => {
+	const success = await todoService.deleteTodo(req.params.id)
+	if (!success) {
+		return res.status(404).json({ error: 'Todo not found' })
+	}
+	res.status(204).send()
 }

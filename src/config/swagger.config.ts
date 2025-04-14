@@ -2,6 +2,7 @@ import path from 'path'
 import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import { Express } from 'express'
+import express from 'express'
 
 const PORT = process.env.PORT || 8001
 
@@ -12,7 +13,15 @@ export const configureSwagger = (app: Express) => {
 			info: {
 				title: 'Todo API',
 				version: '1.0.0',
-				description: 'API для управления задачами'
+				description: 'API для управления задачами',
+				contact: {
+					name: 'API Support',
+					email: 'support@example.com'
+				},
+				license: {
+					name: 'MIT',
+					url: 'https://opensource.org/licenses/MIT'
+				}
 			},
 			servers: [
 				{
@@ -23,26 +32,39 @@ export const configureSwagger = (app: Express) => {
 					url: `http://localhost:${PORT}`,
 					description: 'Local server'
 				}
-			]
+			],
+			components: {
+				securitySchemes: {
+					bearerAuth: {
+						type: 'http',
+						scheme: 'bearer',
+						bearerFormat: 'JWT'
+					}
+				}
+			}
 		},
-		apis: [
-			'./src/routes/*.ts',
-			'./src/controllers/*.ts',
-			'./dist/routes/*.js',
-			'./dist/controllers/*.js'
-		]
+		apis: ['./src/routes/*.ts', './src/controllers/*.ts']
 	}
 
 	const specs = swaggerJsdoc(options)
 
-	const swaggerHtml = swaggerUi.generateHTML(specs, {
+	// Serve swagger-ui static files from node_modules
+	app.use('/api-docs/swagger-ui', express.static(
+		path.join(__dirname, '../../node_modules/swagger-ui-dist/')
+	))
+
+	// Custom HTML to use local static files
+	const customHtml = swaggerUi.generateHTML(specs, {
 		customSiteTitle: 'Todo API Docs',
-		swaggerOptions: {
-			displayRequestDuration: true,
-			defaultModelsExpandDepth: -1
-		}
+		customCssUrl: '/api-docs/swagger-ui/swagger-ui.css',
+		customJs: '/api-docs/swagger-ui/swagger-ui-bundle.js',
+		customfavIcon: '/api-docs/swagger-ui/favicon-32x32.png'
 	})
 
+	app.get('/api-docs', (req, res) => {
+		res.send(customHtml)
+	})
+
+	// Setup API routes
 	app.use('/api-docs', swaggerUi.serveFiles(specs))
-	app.get('/api-docs', (req, res) => { res.send(swaggerHtml) })
 }

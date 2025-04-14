@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getAllTodos, getTodoById } from '../controllers/todos.controller'
+import { getAllTodos, getTodoById, createTodo, updateTodo, deleteTodo } from '../controllers/todos.controller'
 
 const todosRoutes = Router()
 
@@ -72,5 +72,9 @@ todosRoutes.get('/todo/:id', getTodoById)
  *   name: Todos
  *   description: API для управления задачами
  */
+
+todosRoutes.post('/todo', createTodo)
+todosRoutes.put('/todo/:id', updateTodo)
+todosRoutes.delete('/todo/:id', deleteTodo)
 
 export default todosRoutes
