@@ -2,6 +2,12 @@ import { Request, Response } from 'express'
 import { TodoService } from './todo.service'
 import { CreateTodoDto, UpdateTodoDto } from './todo.types'
 
+/**
+ * @swagger
+ * tags:
+ *   name: Todos
+ *   description: API для управления задачами
+ */
 export class TodoController {
 	constructor(private todoService: TodoService) {}
 

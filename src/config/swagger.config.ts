@@ -25,25 +25,17 @@ export const configureSwagger = (app: Express) => {
 			},
 			servers: [
 				{
-					url: 'https://express-authorization-js.vercel.app',
-					description: 'Production server'
-				},
-				{
-					url: `http://localhost:${PORT}`,
-					description: 'Local server'
+					url: process.env.NODE_ENV === 'production'
+						? 'https://express-authorization-js.vercel.app'
+						: `http://localhost:${PORT}`,
+					description: process.env.NODE_ENV === 'production' ? 'Production server' : 'Development server'
 				}
-			],
-			components: {
-				securitySchemes: {
-					bearerAuth: {
-						type: 'http',
-						scheme: 'bearer',
-						bearerFormat: 'JWT'
-					}
-				}
-			}
+			]
 		},
-		apis: ['./src/modules/**/*.ts']
+		apis: [
+			path.join(__dirname, '../modules/**/*.ts'),
+			path.join(__dirname, '../modules/**/*.js')
+		]
 	}
 
 	const specs = swaggerJsdoc(options)
