@@ -43,28 +43,29 @@ export const configureSwagger = (app: Express) => {
 				}
 			}
 		},
-		apis: ['./src/routes/*.ts', './src/controllers/*.ts']
+		apis: ['./src/modules/**/*.ts']
 	}
 
 	const specs = swaggerJsdoc(options)
 
 	// Serve swagger-ui static files from node_modules
-	app.use('/api-docs/swagger-ui', express.static(
+	app.use('/swagger-ui', express.static(
 		path.join(__dirname, '../../node_modules/swagger-ui-dist/')
 	))
 
 	// Custom HTML to use local static files
 	const customHtml = swaggerUi.generateHTML(specs, {
 		customSiteTitle: 'Todo API Docs',
-		customCssUrl: '/api-docs/swagger-ui/swagger-ui.css',
-		customJs: '/api-docs/swagger-ui/swagger-ui-bundle.js',
-		customfavIcon: '/api-docs/swagger-ui/favicon-32x32.png'
+		customCssUrl: '/swagger-ui/swagger-ui.css',
+		customJs: '/swagger-ui/swagger-ui-bundle.js',
+		customfavIcon: '/swagger-ui/favicon-32x32.png'
 	})
 
-	app.get('/api-docs', (req, res) => {
+	// Serve Swagger UI at root
+	app.get('/', (req, res) => {
 		res.send(customHtml)
 	})
 
 	// Setup API routes
-	app.use('/api-docs', swaggerUi.serveFiles(specs))
+	app.use('/', swaggerUi.serveFiles(specs))
 }

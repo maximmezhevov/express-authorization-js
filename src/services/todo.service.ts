@@ -1,4 +1,8 @@
-import { Todo, CreateTodoDto, UpdateTodoDto } from '../interfaces/todo.interface'
+import {
+	Todo,
+	CreateTodoDto,
+	UpdateTodoDto
+} from '../interfaces/todo.interface'
 
 class TodoService {
 	private todos: Todo[] = []
@@ -45,4 +49,4 @@ class TodoService {
 	}
 }
 
-export const todoService = new TodoService() 
+export const todoService = new TodoService()
