@@ -2,9 +2,14 @@ import path from 'path'
 import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import { Express } from 'express'
-import express from 'express'
+import { swaggerSchemas } from './swagger.schemas'
 
-const PORT = process.env.PORT || 8001
+const getServerUrl = () => {
+	if (process.env.VERCEL_URL) {
+		return `https://${process.env.VERCEL_URL}`
+	}
+	return `http://localhost:${process.env.PORT || 8001}`
+}
 
 export const configureSwagger = (app: Express) => {
 	const options = {
@@ -14,10 +19,6 @@ export const configureSwagger = (app: Express) => {
 				title: 'Todo API',
 				version: '1.0.0',
 				description: 'API для управления задачами',
-				contact: {
-					name: 'API Support',
-					email: 'support@example.com'
-				},
 				license: {
 					name: 'MIT',
 					url: 'https://opensource.org/licenses/MIT'
@@ -25,12 +26,13 @@ export const configureSwagger = (app: Express) => {
 			},
 			servers: [
 				{
-					url: process.env.NODE_ENV === 'production'
-						? 'https://express-authorization-js.vercel.app'
-						: `http://localhost:${PORT}`,
-					description: process.env.NODE_ENV === 'production' ? 'Production server' : 'Development server'
+					url: getServerUrl(),
+					description: process.env.VERCEL_URL ? 'Production server' : 'Development server'
 				}
-			]
+			],
+			components: {
+				schemas: swaggerSchemas
+			}
 		},
 		apis: [
 			path.join(__dirname, '../modules/**/*.ts'),
@@ -40,24 +42,9 @@ export const configureSwagger = (app: Express) => {
 
 	const specs = swaggerJsdoc(options)
 
-	// Serve swagger-ui static files from node_modules
-	app.use('/swagger-ui', express.static(
-		path.join(__dirname, '../../node_modules/swagger-ui-dist/')
-	))
-
-	// Custom HTML to use local static files
-	const customHtml = swaggerUi.generateHTML(specs, {
-		customSiteTitle: 'Todo API Docs',
-		customCssUrl: '/swagger-ui/swagger-ui.css',
-		customJs: '/swagger-ui/swagger-ui-bundle.js',
-		customfavIcon: '/swagger-ui/favicon-32x32.png'
-	})
-
-	// Serve Swagger UI at root
-	app.get('/', (req, res) => {
-		res.send(customHtml)
-	})
-
-	// Setup API routes
-	app.use('/', swaggerUi.serveFiles(specs))
+	// Serve Swagger UI
+	app.use('/', swaggerUi.serve)
+	app.get('/', swaggerUi.setup(specs, {
+		customSiteTitle: 'Todo API Documentation'
+	}))
 }
