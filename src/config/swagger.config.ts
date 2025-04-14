@@ -1,0 +1,42 @@
+import path from 'path'
+import swaggerJsdoc from 'swagger-jsdoc'
+import { Express } from 'express'
+
+const PORT = process.env.PORT || 3001
+
+export const configureSwagger = (app: Express) => {
+	const options = {
+		definition: {
+			openapi: '3.0.0',
+			info: {
+				title: 'Todo API',
+				version: '1.0.0',
+				description: 'API для управления задачами'
+			},
+			servers: [
+				{
+					url: process.env.VERCEL_URL
+						? process.env.VERCEL_URL
+						: `http://localhost:${PORT}`
+				}
+			]
+		},
+		apis:
+			process.env.NODE_ENV === 'production'
+				? ['./dist/routes/*.js', './dist/controllers/*.js']
+				: [
+						path.join(__dirname, '../routes/*.ts'),
+						path.join(__dirname, '../controllers/*.ts')
+				  ]
+	}
+
+	const specs = swaggerJsdoc(options)
+
+	app.use(
+		'/',
+		require('swagger-ui-express').serve,
+		require('swagger-ui-express').setup(specs, {
+			customSiteTitle: 'Todo API Docs'
+		})
+	)
+}

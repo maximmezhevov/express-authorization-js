@@ -3,18 +3,17 @@
 		"target": "ESNext",
 		"module": "CommonJS",
 		"moduleResolution": "node",
+		"esModuleInterop": true,
+
 		"outDir": "./dist",
 		"rootDir": "./src",
-		"esModuleInterop": true,
+
+		"strict": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"strict": true,
-		"types": ["@types/node", "@vercel/node"],
-		"baseUrl": ".",
-		"paths": {
-			"*": ["node_modules/*"]
-		}
+		"resolveJsonModule": true,
+		"removeComments": false
 	},
 	"include": ["src/**/*"],
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules", "dist"]
 }
