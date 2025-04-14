@@ -8,9 +8,7 @@ const app = createApp()
 const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
-	if (process.env.NODE_ENV === 'development') {
-		console.log(`🚀 Server running on http://localhost:${PORT}`)
-	}
+	console.log(`Server started on port ${PORT} in ${process.env.NODE_ENV} mode`)
 })
 
 export default app
