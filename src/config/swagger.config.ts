@@ -33,7 +33,7 @@ export const configureSwagger = (app: Express) => {
 	const specs = swaggerJsdoc(options)
 
 	app.use(
-		'/',
+		'/api-docs',
 		require('swagger-ui-express').serve,
 		require('swagger-ui-express').setup(specs, {
 			customSiteTitle: 'Todo API Docs',
