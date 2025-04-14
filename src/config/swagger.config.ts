@@ -2,7 +2,7 @@ import path from 'path'
 import swaggerJsdoc from 'swagger-jsdoc'
 import { Express } from 'express'
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 8001
 
 export const configureSwagger = (app: Express) => {
 	const options = {
@@ -22,7 +22,7 @@ export const configureSwagger = (app: Express) => {
 			]
 		},
 		apis:
-			process.env.NODE_ENV === 'production'
+			process.env.NODE_ENV === 'production' || !process.env.NODE_ENV
 				? ['./dist/routes/*.js', './dist/controllers/*.js']
 				: [
 						path.join(__dirname, '../routes/*.ts'),

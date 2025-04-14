@@ -18,8 +18,5 @@
 			"src": "/",
 			"dest": "src/server.ts"
 		}
-	],
-	"env": {
-		"NODE_ENV": "production"
-	}
+	]
 }
