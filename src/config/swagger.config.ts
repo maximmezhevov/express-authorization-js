@@ -26,8 +26,10 @@ export const configureSwagger = (app: Express) => {
 			]
 		},
 		apis: [
-			path.join(process.cwd(), process.env.NODE_ENV === 'production' ? 'dist' : 'src', 'routes', '*.{ts,js}'),
-			path.join(process.cwd(), process.env.NODE_ENV === 'production' ? 'dist' : 'src', 'controllers', '*.{ts,js}')
+			'./src/routes/*.ts',
+			'./src/controllers/*.ts',
+			'./dist/routes/*.js',
+			'./dist/controllers/*.js'
 		]
 	}
 

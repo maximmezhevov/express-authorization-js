@@ -2,7 +2,7 @@
 	"name": "express-authorization-js",
 	"scripts": {
 		"dev": "NODE_ENV=development nodemon",
-		"build": "tsc",
+		"build": "tsc && cp -r src/routes dist/ && cp -r src/controllers dist/",
 		"vercel-build": "npm run build",
 		"start": "NODE_ENV=production node dist/server.js"
 	},
