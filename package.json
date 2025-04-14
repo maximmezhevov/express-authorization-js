@@ -3,6 +3,7 @@
 	"scripts": {
 		"dev": "NODE_ENV=development nodemon",
 		"build": "tsc",
+		"vercel-build": "npm run build",
 		"start": "NODE_ENV=production node dist/server.js"
 	},
 	"engines": {
