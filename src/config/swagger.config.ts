@@ -1,5 +1,6 @@
 import path from 'path'
 import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
 import { Express } from 'express'
 
 const PORT = process.env.PORT || 8001
@@ -32,15 +33,14 @@ export const configureSwagger = (app: Express) => {
 
 	const specs = swaggerJsdoc(options)
 
-	app.use(
-		'/api-docs',
-		require('swagger-ui-express').serve,
-		require('swagger-ui-express').setup(specs, {
-			customSiteTitle: 'Todo API Docs',
-			swaggerOptions: {
-				displayRequestDuration: true,
-				defaultModelsExpandDepth: -1
-			}
-		})
-	)
+	const swaggerHtml = swaggerUi.generateHTML(specs, {
+		customSiteTitle: 'Todo API Docs',
+		swaggerOptions: {
+			displayRequestDuration: true,
+			defaultModelsExpandDepth: -1
+		}
+	})
+
+	app.use('/api-docs', swaggerUi.serveFiles(specs))
+	app.get('/api-docs', (req, res) => { res.send(swaggerHtml) })
 }
