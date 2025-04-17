@@ -12,16 +12,21 @@ const app = express()
 
 // Middleware
 app.use((req, res, next) => {
-	// Handle OPTIONS method
-	if (req.method === 'OPTIONS') {
-		res.setHeader('Access-Control-Allow-Origin', '*');
-		res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-		res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
-		res.setHeader('Access-Control-Allow-Credentials', 'true');
-		res.status(200).end();
-		return;
-	}
+	console.log('Request URL:', req.url);
+	console.log('Request Method:', req.method);
+	console.log('Request Origin:', req.headers.origin);
+	console.log('Request Headers:', req.headers);
 	next();
+});
+
+// Handle OPTIONS method
+app.options('*', (req, res) => {
+	console.log('Handling OPTIONS request');
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+	res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
+	res.setHeader('Access-Control-Allow-Credentials', 'true');
+	res.status(200).end();
 });
 
 app.use(cors({
