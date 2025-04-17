@@ -16,7 +16,61 @@ const options = {
 				url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:8001',
 				description: process.env.VERCEL_URL ? 'Production server' : 'Development server'
 			}
-		]
+		],
+		components: {
+			schemas: {
+				Todo: {
+					type: 'object',
+					properties: {
+						id: {
+							type: 'string',
+							description: 'ID задачи'
+						},
+						title: {
+							type: 'string',
+							description: 'Название задачи'
+						},
+						completed: {
+							type: 'boolean',
+							description: 'Статус выполнения задачи'
+						},
+						createdAt: {
+							type: 'string',
+							format: 'date-time',
+							description: 'Дата создания'
+						},
+						updatedAt: {
+							type: 'string',
+							format: 'date-time',
+							description: 'Дата обновления'
+						}
+					}
+				},
+				CreateTodoDto: {
+					type: 'object',
+					required: ['title'],
+					properties: {
+						title: {
+							type: 'string',
+							description: 'Название задачи'
+						}
+					}
+				},
+				UpdateTodoDto: {
+					type: 'object',
+					properties: {
+						title: {
+							type: 'string',
+							description: 'Название задачи'
+						},
+						completed: {
+							type: 'boolean',
+							description: 'Статус выполнения задачи'
+						}
+					}
+				}
+			}
+		}
 	},
 	apis: [
 		path.join(__dirname, '../modules/**/*.ts'),
