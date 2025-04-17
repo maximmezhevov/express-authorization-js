@@ -1,19 +1,28 @@
 {
 	"compilerOptions": {
-		"target": "ESNext",
-		"module": "CommonJS",
-		"moduleResolution": "node",
-		"esModuleInterop": true,
-
-		"outDir": "./dist",
-		"rootDir": "./src",
-
-		"strict": true,
+		"target": "es2017",
+		"module": "commonjs",
+		"lib": ["es2017", "esnext.asynciterable"],
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
+		"sourceMap": true,
+		"outDir": "./dist",
+		"moduleResolution": "node",
+		"removeComments": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"noImplicitThis": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
 		"resolveJsonModule": true,
-		"removeComments": false
+		"baseUrl": "."
 	},
-	"include": ["src/**/*"],
-	"exclude": ["node_modules", "dist"]
+	"exclude": ["node_modules"],
+	"include": ["./src/**/*.ts"]
 }
