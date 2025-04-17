@@ -23,13 +23,21 @@ const options = {
 export const configureSwagger = (app: Express) => {
 	const specs = swaggerJsdoc(options)
 
-	// Serve Swagger UI on /api-docs
-	app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+	// Serve Swagger UI
+	app.use('/api-docs', swaggerUi.serve)
+	app.get('/api-docs', swaggerUi.setup(specs, {
 		explorer: true,
-		customSiteTitle: 'Todo API Documentation'
+		customSiteTitle: 'Todo API Documentation',
+		swaggerOptions: {
+			persistAuthorization: true,
+			displayRequestDuration: true
+		},
+		customCss: '.swagger-ui .topbar { display: none }',
+		customJs: '',
+		customfavIcon: '/favicon.ico'
 	}))
 
-	// Serve Swagger JSON on /api-docs.json
+	// Serve Swagger JSON
 	app.get('/api-docs.json', (req, res) => {
 		res.setHeader('Content-Type', 'application/json')
 		res.send(specs)

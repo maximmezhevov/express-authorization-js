@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
+import path from 'path'
 import { configureSwagger } from './config/swagger.config'
 import { prisma } from './lib/prisma'
 import { TodoService, TodoController, createTodoRouter } from './modules/todos'
