@@ -31,6 +31,12 @@ app.use(cors({
 }))
 app.use(express.json())
 
+// Логирование запросов
+app.use((req, res, next) => {
+	console.log(`${req.method} ${req.url}`)
+	next()
+})
+
 // Configure Swagger
 configureSwagger(app)
 
@@ -41,8 +47,18 @@ const todoController = new TodoController(todoService)
 // Setup routes
 app.use('/api', createTodoRouter(todoController))
 
+// Обработка 404
+app.use((req, res) => {
+	console.log(`404: ${req.method} ${req.url}`)
+	res.status(404).json({
+		status: 'error',
+		message: 'Not found'
+	})
+})
+
 // Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+	console.error(`Error: ${err.message}`)
 	console.error(err.stack)
 	res.status(500).json({
 		status: 'error',
@@ -53,13 +69,17 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 })
 
 // Server
-
 const PORT = process.env.PORT || 8001
 
-// Для Vercel
 if (process.env.NODE_ENV === 'production') {
 	app.listen(PORT, () => {
 		console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`)
+		console.log(`Swagger UI available at: ${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${PORT}`}`)
+	})
+} else {
+	app.listen(PORT, () => {
+		console.log(`Server running on port ${PORT} in development mode`)
+		console.log(`Swagger UI available at: http://localhost:${PORT}`)
 	})
 }
 

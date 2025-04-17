@@ -52,7 +52,12 @@ export const configureSwagger = (app: Express) => {
 			showExtensions: true,
 			showCommonExtensions: true,
 			deepLinking: true,
-			persistAuthorization: true
-		}
+			persistAuthorization: true,
+			displayRequestDuration: true,
+			tryItOutEnabled: true
+		},
+		customCss: '.swagger-ui .topbar { display: none }',
+		customJs: '',
+		customfavIcon: '/favicon.ico'
 	}))
 }
