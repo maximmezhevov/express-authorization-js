@@ -12,24 +12,28 @@ const options = {
 			version: '1.0.0',
 			description: 'API для управления задачами'
 		},
-		servers: [
-			{
-				url: 'https://express-authorization-js.vercel.app',
-				description: 'Production server'
-			},
-			{
-				url: 'https://express-authorization-js-git-master-mzhvv.vercel.app',
-				description: 'Git master branch'
-			},
-			{
-				url: 'https://express-authorization-js-mzhvv.vercel.app',
-				description: 'Vercel preview'
-			},
-			{
-				url: 'http://localhost:8001',
-				description: 'Development server'
-			}
-		],
+		servers: process.env.VERCEL_URL ?
+			[
+				// localhost
+				{
+					url: `http://localhost:${process.env.PORT || 8001}`,
+					description: 'Local server'
+				}
+			] : [
+				// Vercel deployment
+				{
+					url: 'https://express-authorization-js.vercel.app',
+					description: 'Production server'
+				},
+				{
+					url: 'https://express-authorization-js-git-master-mzhvv.vercel.app',
+					description: 'Git master branch'
+				},
+				{
+					url: 'https://express-authorization-js-mzhvv.vercel.app',
+					description: 'Vercel preview'
+				}
+			],
 		components: {
 			schemas: swaggerSchemas
 		}
