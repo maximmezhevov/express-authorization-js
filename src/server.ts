@@ -56,8 +56,11 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 
 const PORT = process.env.PORT || 8001
 
-app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`)
-})
+// Для Vercel
+if (process.env.NODE_ENV === 'production') {
+	app.listen(PORT, () => {
+		console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`)
+	})
+}
 
 export default app

@@ -2,8 +2,8 @@
 	"name": "express-authorization-js",
 	"scripts": {
 		"dev": "NODE_ENV=development nodemon",
-		"build": "tsc",
-		"vercel-build": "npm run build",
+		"build": "prisma generate && tsc",
+		"vercel-build": "prisma generate && tsc",
 		"postinstall": "prisma generate",
 		"start": "NODE_ENV=production node dist/server.js",
 		"prisma:studio": "prisma studio",
