@@ -33,7 +33,13 @@ export const configureSwagger = (app: Express) => {
 		customSiteTitle: 'Todo API Documentation',
 		swaggerOptions: {
 			persistAuthorization: true,
-			displayRequestDuration: true
+			displayRequestDuration: true,
+			urls: [
+				{
+					url: '/api-docs.json',
+					name: 'API Documentation'
+				}
+			]
 		},
 		customCss: '.swagger-ui .topbar { display: none }',
 		customJs: '',
