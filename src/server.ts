@@ -11,28 +11,24 @@ dotenv.config()
 const app = express()
 
 // Middleware
+app.use((req, res, next) => {
+	// Handle OPTIONS method
+	if (req.method === 'OPTIONS') {
+		res.setHeader('Access-Control-Allow-Origin', '*');
+		res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+		res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
+		res.setHeader('Access-Control-Allow-Credentials', 'true');
+		res.status(200).end();
+		return;
+	}
+	next();
+});
+
 app.use(cors({
-	origin: function (origin, callback) {
-		// Allow requests with no origin (like mobile apps or curl requests)
-		if (!origin) return callback(null, true);
-
-		// Разрешаем все домены Vercel
-		if (origin.endsWith('.vercel.app')) {
-			return callback(null, true);
-		}
-
-		// Разрешаем локальные домены для разработки
-		if (origin.startsWith('http://localhost:')) {
-			return callback(null, true);
-		}
-
-		console.log('Blocked origin:', origin);
-		const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-		return callback(new Error(msg), false);
-	},
+	origin: '*',
 	credentials: true,
-	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-	allowedHeaders: ['Content-Type', 'Authorization']
+	methods: ['GET', 'OPTIONS', 'PATCH', 'DELETE', 'POST', 'PUT'],
+	allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Accept', 'Accept-Version', 'Content-Length', 'Content-MD5', 'Content-Type', 'Date', 'X-Api-Version', 'Authorization']
 }));
 
 app.use(express.json())
