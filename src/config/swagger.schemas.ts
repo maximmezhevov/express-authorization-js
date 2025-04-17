@@ -1,30 +1,28 @@
 export const swaggerSchemas = {
   Todo: {
     type: 'object',
-    required: ['title'],
     properties: {
       id: {
         type: 'string',
-        description: 'The todo ID'
+        description: 'ID задачи'
       },
       title: {
         type: 'string',
-        description: 'The todo title'
+        description: 'Название задачи'
       },
       completed: {
         type: 'boolean',
-        description: 'The todo status',
-        default: false
+        description: 'Статус выполнения задачи'
       },
       createdAt: {
         type: 'string',
         format: 'date-time',
-        description: 'The creation timestamp'
+        description: 'Дата создания'
       },
       updatedAt: {
         type: 'string',
         format: 'date-time',
-        description: 'The last update timestamp'
+        description: 'Дата обновления'
       }
     }
   },
@@ -35,12 +33,7 @@ export const swaggerSchemas = {
     properties: {
       title: {
         type: 'string',
-        description: 'The todo title'
-      },
-      completed: {
-        type: 'boolean',
-        description: 'The todo status',
-        default: false
+        description: 'Название задачи'
       }
     }
   },
@@ -49,11 +42,11 @@ export const swaggerSchemas = {
     properties: {
       title: {
         type: 'string',
-        description: 'The todo title'
+        description: 'Название задачи'
       },
       completed: {
         type: 'boolean',
-        description: 'The todo status'
+        description: 'Статус выполнения задачи'
       }
     }
   },

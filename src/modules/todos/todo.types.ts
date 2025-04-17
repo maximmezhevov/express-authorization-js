@@ -6,43 +6,11 @@ export type { Todo }
  * @swagger
  * components:
  *   schemas:
- *     Todo:
- *       type: object
- *       properties:
- *         id:
- *           type: string
- *           description: ID задачи
- *         title:
- *           type: string
- *           description: Название задачи
- *         completed:
- *           type: boolean
- *           description: Статус выполнения задачи
- *         createdAt:
- *           type: string
- *           format: date-time
- *           description: Дата создания
- *         updatedAt:
- *           type: string
- *           format: date-time
- *           description: Дата обновления
+ *     $ref: '../../config/swagger.schemas.ts#/Todo'
  *     CreateTodoDto:
- *       type: object
- *       required:
- *         - title
- *       properties:
- *         title:
- *           type: string
- *           description: Название задачи
+ *       $ref: '../../config/swagger.schemas.ts#/CreateTodoDto'
  *     UpdateTodoDto:
- *       type: object
- *       properties:
- *         title:
- *           type: string
- *           description: Название задачи
- *         completed:
- *           type: boolean
- *           description: Статус выполнения задачи
+ *       $ref: '../../config/swagger.schemas.ts#/UpdateTodoDto'
  */
 
 export interface CreateTodoDto {

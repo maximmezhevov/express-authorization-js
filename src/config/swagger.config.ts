@@ -2,6 +2,7 @@ import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import express, { Express } from 'express'
 import path from 'path'
+import { swaggerSchemas } from './swagger.schemas'
 
 const options = {
 	definition: {
@@ -18,58 +19,7 @@ const options = {
 			}
 		],
 		components: {
-			schemas: {
-				Todo: {
-					type: 'object',
-					properties: {
-						id: {
-							type: 'string',
-							description: 'ID задачи'
-						},
-						title: {
-							type: 'string',
-							description: 'Название задачи'
-						},
-						completed: {
-							type: 'boolean',
-							description: 'Статус выполнения задачи'
-						},
-						createdAt: {
-							type: 'string',
-							format: 'date-time',
-							description: 'Дата создания'
-						},
-						updatedAt: {
-							type: 'string',
-							format: 'date-time',
-							description: 'Дата обновления'
-						}
-					}
-				},
-				CreateTodoDto: {
-					type: 'object',
-					required: ['title'],
-					properties: {
-						title: {
-							type: 'string',
-							description: 'Название задачи'
-						}
-					}
-				},
-				UpdateTodoDto: {
-					type: 'object',
-					properties: {
-						title: {
-							type: 'string',
-							description: 'Название задачи'
-						},
-						completed: {
-							type: 'boolean',
-							description: 'Статус выполнения задачи'
-						}
-					}
-				}
-			}
+			schemas: swaggerSchemas
 		}
 	},
 	apis: [
