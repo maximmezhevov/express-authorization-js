@@ -24,8 +24,16 @@ const options = {
 				}
 			] : [
 				{
-					url: `http://localhost:${process.env.PORP}`,
+					url: `http://localhost:${process.env.PORT || 8001}`,
 					description: 'Local Development server'
+				},
+				{
+					url: 'https://express-authorization-js.vercel.app',
+					description: 'Vercel Production server (Assigned Domain)'
+				},
+				{
+					url: 'https://express-authorization-js-git-master-mzhvv.vercel.app',
+					description: 'Git master branch (Latest deployment on branch—updates automatically)'
 				}
 			],
 		components: {
