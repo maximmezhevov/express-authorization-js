@@ -29,6 +29,11 @@ const todoController = new TodoController(todoService)
 // Setup routes
 app.use('/api', createTodoRouter(todoController))
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+	res.status(200).json({ status: 'ok' })
+})
+
 // Обработка 404
 app.use((req, res) => {
 	console.log(`404: ${req.method} ${req.url}`)
@@ -48,15 +53,9 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 	})
 })
 
-// Server
-const PORT = process.env.PORT || 8001
-
-if (process.env.NODE_ENV === 'production') {
-	app.listen(PORT, () => {
-		console.log(`Server running on port ${PORT}`)
-		console.log(`Swagger UI available at: ${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${PORT}`}`)
-	})
-} else {
+// Only start the server if we're not in a serverless environment
+if (process.env.NODE_ENV !== 'production') {
+	const PORT = process.env.PORT || 8001
 	app.listen(PORT, () => {
 		console.log(`Server running on port ${PORT} in development mode`)
 		console.log(`Swagger UI available at: http://localhost:${PORT}`)
