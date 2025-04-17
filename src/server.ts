@@ -17,7 +17,6 @@ const allowedOrigins = [
 	'https://express-authorization-js-git-master-mzhvv.vercel.app',
 	'https://express-authorization-fiw1arz9c-mzhvv.vercel.app',
 	'http://localhost:8001',
-	'http://localhost:3000'
 ];
 
 app.use(cors({
