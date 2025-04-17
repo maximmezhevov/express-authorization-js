@@ -11,24 +11,24 @@ dotenv.config()
 const app = express()
 
 // Middleware
-const allowedOrigins = [
-	'https://express-authorization-js.vercel.app',
-	'https://express-authorization-js-mzhvv.vercel.app',
-	'https://express-authorization-js-git-master-mzhvv.vercel.app',
-	'https://express-authorization-fiw1arz9c-mzhvv.vercel.app',
-	'http://localhost:8001',
-];
-
 app.use(cors({
 	origin: function (origin, callback) {
 		// Allow requests with no origin (like mobile apps or curl requests)
 		if (!origin) return callback(null, true);
 
-		if (allowedOrigins.indexOf(origin) === -1) {
-			const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-			return callback(new Error(msg), false);
+		// Разрешаем все домены Vercel
+		if (origin.endsWith('.vercel.app')) {
+			return callback(null, true);
 		}
-		return callback(null, true);
+
+		// Разрешаем локальные домены для разработки
+		if (origin.startsWith('http://localhost:')) {
+			return callback(null, true);
+		}
+
+		console.log('Blocked origin:', origin);
+		const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+		return callback(new Error(msg), false);
 	},
 	credentials: true,
 	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
