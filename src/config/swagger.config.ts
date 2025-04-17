@@ -1,6 +1,7 @@
 import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import { Express } from 'express'
+import path from 'path'
 
 const options = {
 	definition: {
@@ -23,9 +24,11 @@ const options = {
 export const configureSwagger = (app: Express) => {
 	const specs = swaggerJsdoc(options)
 
+	// Serve Swagger UI static files
+	app.use('/swagger-ui', express.static(path.join(__dirname, '../../node_modules/swagger-ui-dist')))
+
 	// Serve Swagger UI
-	app.use('/api-docs', swaggerUi.serve)
-	app.get('/api-docs', swaggerUi.setup(specs, {
+	app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
 		explorer: true,
 		customSiteTitle: 'Todo API Documentation',
 		swaggerOptions: {
