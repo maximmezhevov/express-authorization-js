@@ -18,7 +18,10 @@ const options = {
 			}
 		]
 	},
-	apis: ['./src/modules/**/*.ts']
+	apis: [
+		path.join(__dirname, '../modules/**/*.ts'),
+		path.join(__dirname, '../modules/**/*.js')
+	]
 }
 
 export const configureSwagger = (app: Express) => {
