@@ -19,6 +19,20 @@ app.use((req, res, next) => {
 	next()
 })
 
+// Root endpoint
+app.get('/', (req, res) => {
+	res.json({
+		message: 'Welcome to Todo API',
+		documention: '/api-docs',
+		health: '/health'
+	})
+})
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+	res.status(200).json({ status: 'ok' })
+})
+
 // Configure Swagger
 configureSwagger(app)
 
@@ -28,11 +42,6 @@ const todoController = new TodoController(todoService)
 
 // Setup routes
 app.use('/api', createTodoRouter(todoController))
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-	res.status(200).json({ status: 'ok' })
-})
 
 // Обработка 404
 app.use((req, res) => {
@@ -58,7 +67,7 @@ if (process.env.NODE_ENV !== 'production') {
 	const PORT = process.env.PORT || 8001
 	app.listen(PORT, () => {
 		console.log(`Server running on port ${PORT} in development mode`)
-		console.log(`Swagger UI available at: http://localhost:${PORT}`)
+		console.log(`Swagger UI available at: http://localhost:${PORT}/api-docs`)
 	})
 }
 
