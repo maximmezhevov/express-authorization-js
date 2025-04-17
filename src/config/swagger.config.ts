@@ -43,8 +43,16 @@ export const configureSwagger = (app: Express) => {
 	const specs = swaggerJsdoc(options)
 
 	// Serve Swagger UI
-	app.use('/', swaggerUi.serve)
-	app.get('/', swaggerUi.setup(specs, {
-		customSiteTitle: 'Todo API Documentation'
+	app.use('/api-docs', swaggerUi.serve)
+	app.get('/api-docs', swaggerUi.setup(specs, {
+		customSiteTitle: 'Todo API Documentation',
+		swaggerOptions: {
+			docExpansion: 'list',
+			filter: true,
+			showExtensions: true,
+			showCommonExtensions: true,
+			deepLinking: true,
+			persistAuthorization: true
+		}
 	}))
 }

@@ -15,10 +15,16 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
 		process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
 		...(process.env.ALLOWED_ORIGINS?.split(',') || [])
 	].filter(Boolean)
-	: '*'
+	: ['http://localhost:3000', 'http://localhost:8001']
 
 app.use(cors({
-	origin: allowedOrigins,
+	origin: (origin, callback) => {
+		if (!origin || allowedOrigins.includes(origin)) {
+			callback(null, true)
+		} else {
+			callback(new Error('Not allowed by CORS'))
+		}
+	},
 	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 	allowedHeaders: ['Content-Type', 'Authorization'],
 	credentials: true

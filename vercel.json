@@ -2,29 +2,25 @@
 	"version": 2,
 	"builds": [
 		{
-			"src": "src/server.ts",
-			"use": "@vercel/node",
-			"config": {
-				"includeFiles": [
-					"node_modules/swagger-ui-dist/**",
-					"prisma/**",
-					"dist/**"
-				]
-			}
+			"src": "dist/server.js",
+			"use": "@vercel/node"
 		}
 	],
 	"routes": [
 		{
-			"src": "/swagger-ui/(.*)",
-			"dest": "src/server.ts"
+			"src": "/api-docs/(.*)",
+			"dest": "dist/server.js"
 		},
 		{
 			"src": "/api/(.*)",
-			"dest": "src/server.ts"
+			"dest": "dist/server.js"
 		},
 		{
 			"src": "/(.*)",
-			"dest": "src/server.ts"
+			"dest": "dist/server.js"
 		}
-	]
+	],
+	"env": {
+		"NODE_ENV": "production"
+	}
 }
