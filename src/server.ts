@@ -10,25 +10,7 @@ dotenv.config()
 const app = express()
 
 // Middleware
-const allowedOrigins = process.env.NODE_ENV === 'production'
-	? [
-		process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
-		...(process.env.ALLOWED_ORIGINS?.split(',') || [])
-	].filter(Boolean)
-	: ['http://localhost:3000', 'http://localhost:8001']
-
-app.use(cors({
-	origin: (origin, callback) => {
-		if (!origin || allowedOrigins.includes(origin)) {
-			callback(null, true)
-		} else {
-			callback(new Error('Not allowed by CORS'))
-		}
-	},
-	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-	allowedHeaders: ['Content-Type', 'Authorization'],
-	credentials: true
-}))
+app.use(cors())
 app.use(express.json())
 
 // Логирование запросов
@@ -62,9 +44,7 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 	console.error(err.stack)
 	res.status(500).json({
 		status: 'error',
-		message: process.env.NODE_ENV === 'production'
-			? 'Internal server error'
-			: err.message
+		message: 'Internal server error'
 	})
 })
 
@@ -73,7 +53,7 @@ const PORT = process.env.PORT || 8001
 
 if (process.env.NODE_ENV === 'production') {
 	app.listen(PORT, () => {
-		console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`)
+		console.log(`Server running on port ${PORT}`)
 		console.log(`Swagger UI available at: ${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${PORT}`}`)
 	})
 } else {
