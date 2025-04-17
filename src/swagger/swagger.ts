@@ -46,7 +46,7 @@ const options = {
 	]
 }
 
-export const configureSwagger = (app: Express) => {
+export const swagger = (app: Express) => {
 	const specs = swaggerJsdoc(options)
 
 	// Serve Swagger UI static files

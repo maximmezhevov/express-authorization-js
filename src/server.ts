@@ -1,8 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import path from 'path'
-import { configureSwagger } from './config/swagger.config'
+import { swagger } from './swagger/swagger'
 import { prisma } from './lib/prisma'
 import { TodoService, TodoController, createTodoRouter } from './modules/todos'
 
@@ -59,7 +58,7 @@ app.get('/health', (req, res) => {
 })
 
 // Configure Swagger
-configureSwagger(app)
+swagger(app)
 
 // Initialize services and controllers
 const todoService = new TodoService(prisma)
@@ -91,8 +90,7 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 if (process.env.NODE_ENV !== 'production') {
 	const PORT = process.env.PORT || 8001
 	app.listen(PORT, () => {
-		console.log(`Server running on port ${PORT} in development mode`)
-		console.log(`Swagger UI available at: http://localhost:${PORT}/api-docs`)
+		console.log(`Local server running on port ${PORT} in development mode`)
 	})
 }
 
