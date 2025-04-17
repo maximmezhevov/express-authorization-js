@@ -14,24 +14,18 @@ const options = {
 		},
 		servers: process.env.VERCEL_URL ?
 			[
-				// Vercel deployment
 				{
 					url: 'https://express-authorization-js.vercel.app',
-					description: 'Production server'
+					description: 'Vercel Production server (Assigned Domain)'
 				},
 				{
 					url: 'https://express-authorization-js-git-master-mzhvv.vercel.app',
-					description: 'Git master branch'
-				},
-				{
-					url: 'https://express-authorization-js-mzhvv.vercel.app',
-					description: 'Vercel preview'
+					description: 'Git master branch (Latest deployment on branch—updates automatically)'
 				}
 			] : [
-				// localhost
 				{
-					url: `http://localhost:${process.env.PORT || 8001}`,
-					description: 'Local server'
+					url: `http://localhost:${process.env.PORP}`,
+					description: 'Local Development server'
 				}
 			],
 		components: {
