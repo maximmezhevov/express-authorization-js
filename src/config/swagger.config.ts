@@ -40,7 +40,7 @@ export const configureSwagger = (app: Express) => {
 			urls: [
 				{
 					url: '/api-docs.json',
-					name: 'API Documentation'
+					name: 'json api documentation'
 				}
 			]
 		},
