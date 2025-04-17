@@ -14,12 +14,6 @@ const options = {
 		},
 		servers: process.env.VERCEL_URL ?
 			[
-				// localhost
-				{
-					url: `http://localhost:${process.env.PORT || 8001}`,
-					description: 'Local server'
-				}
-			] : [
 				// Vercel deployment
 				{
 					url: 'https://express-authorization-js.vercel.app',
@@ -32,6 +26,12 @@ const options = {
 				{
 					url: 'https://express-authorization-js-mzhvv.vercel.app',
 					description: 'Vercel preview'
+				}
+			] : [
+				// localhost
+				{
+					url: `http://localhost:${process.env.PORT || 8001}`,
+					description: 'Local server'
 				}
 			],
 		components: {
