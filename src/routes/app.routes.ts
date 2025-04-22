@@ -1,6 +1,6 @@
 import { Express } from 'express'
 
-import { swagger } from '../lib/swagger/swagger'
+import { swaggerRoutes } from '../lib/swagger'
 
 export const appRoutes = (app: Express): void => {
 	// Root endpoint
@@ -13,5 +13,5 @@ export const appRoutes = (app: Express): void => {
 	})
 
 	// Configure Swagger
-	swagger(app)
+	app.use(swaggerRoutes)
 }
