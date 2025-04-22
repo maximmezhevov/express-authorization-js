@@ -1,14 +1,21 @@
 import { Router } from 'express'
 import { TodoController } from './todo.controller'
+import { TodoService } from './todo.service'
+import { PrismaClient } from '@prisma/client'
 
-export function createTodoRouter(controller: TodoController): Router {
+export function createTodoRouter(prisma: PrismaClient): Router {
 	const router = Router()
 
-	router.get('/todos', controller.getAllTodos.bind(controller))
-	router.get('/todos/:id', controller.getTodoById.bind(controller))
-	router.post('/todos', controller.createTodo.bind(controller))
-	router.put('/todos/:id', controller.updateTodo.bind(controller))
-	router.delete('/todos/:id', controller.deleteTodo.bind(controller))
+	// Инициализация сервиса и контроллера
+	const todoService = new TodoService(prisma)
+	const todoController = new TodoController(todoService)
+
+	// Настройка маршрутов
+	router.get('/todos', todoController.getAllTodos.bind(todoController))
+	router.get('/todos/:id', todoController.getTodoById.bind(todoController))
+	router.post('/todos', todoController.createTodo.bind(todoController))
+	router.put('/todos/:id', todoController.updateTodo.bind(todoController))
+	router.delete('/todos/:id', todoController.deleteTodo.bind(todoController))
 
 	return router
 } 

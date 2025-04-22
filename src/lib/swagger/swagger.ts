@@ -41,8 +41,8 @@ const options = {
 		}
 	},
 	apis: [
-		path.join(__dirname, '../modules/**/*.ts'),
-		path.join(__dirname, '../modules/**/*.js')
+		path.join(__dirname, '../../modules/**/*.ts'),
+		path.join(__dirname, '../../modules/**/*.js')
 	]
 }
 
@@ -50,7 +50,7 @@ export const swagger = (app: Express) => {
 	const specs = swaggerJsdoc(options)
 
 	// Serve Swagger UI static files
-	app.use('/swagger-ui', express.static(path.join(__dirname, '../../node_modules/swagger-ui-dist')))
+	app.use('/swagger-ui', express.static(path.join(__dirname, '../../../node_modules/swagger-ui-dist')))
 
 	// Serve Swagger UI
 	app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
