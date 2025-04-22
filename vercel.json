@@ -16,6 +16,10 @@
 			"dest": "/public/swagger-ui/$1"
 		},
 		{
+			"src": "dist/index.js",
+			"use": "@vercel/node"
+		},
+		{
 			"src": "/api-docs",
 			"dest": "src/server.ts"
 		},
